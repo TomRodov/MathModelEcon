@@ -1,0 +1,756 @@
+---
+title: "Mathematical analysis of retractable and extendible bonds"
+author: "Tom Rodov"
+date: "2024-12-15"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+\newpage
+
+\begin{flushleft}
+\textbf{Position of the problem}
+\end{flushleft}
+
+
+
+
+\quad The problem under consideration in the paper is the analysis and valuation of
+retractable and extendible bonds, and that resulting model is applied to price
+Government of Canada bonds, with the ultimate goal of making a profit using the
+model.
+
+\quad In some detail, the paper states that significant theoretical work has 
+been done, but not much application, so with some assumptions and previous works
+the mathematical model allows us to predict the behavior of bond prices under 
+different interest rate scenarios, enabling investors to optimize their strategies
+for financial gain.
+
+
+
+
+
+\textbf{Description of the system being modelled}
+
+\quad The system being modeled represents the pricing behavior of retractable and extendible bonds within a financial market. These bonds are specialized instruments that include embedded options, offering the bondholder flexibility to either extend the bond's maturity date or redeem it earlier than its original term. The key factor driving the value of these options is the movement of interest rates, which fluctuate over time in an uncertain, yet statistically predictable manner.
+
+\quad An extendible bond allows the bondholder (the investor) to extend the bond's maturity to a longer date if they choose. This feature gives the investor flexibility to decide whether they want to hold the bond for a longer period, typically depending on market conditions such as interest rates. For example, A 3-year extendible bond might give the option to extend the maturity to 10 years. If interest rates decrease during the first 3 years, extending the bond allows the investor to continue receiving the same (higher) interest rate.
+
+\quad A retractable bond allows the bondholder to shorten the bond's maturity by redeeming it earlier than its original maturity date. This feature gives the investor flexibility to get their money back sooner if needed. For example, A 10-year retractable bond might allow the investor to retract (redeem) it after 5 years. If interest rates rise after 5 years, the investor can redeem the bond early and reinvest at a higher rate.
+
+
+\quad The relationship between bonds and interest rates is one of inverse proportionality: when interest rates rise, bond prices fall, and when interest rates fall, bond prices rise. This inverse relationship occurs due to the way bonds are structured and valued in financial markets.
+
+\quad When a bond is issued, it comes with a fixed coupon rate, which is the interest paid to the bondholder, typically expressed as a percentage of the bond's face value. This coupon rate remains unchanged throughout the life of the bond, regardless of what happens to the overall market interest rates. However, the value of the bond in the market does change as interest rates fluctuate.
+
+ To understand why this happens, consider an example:
+
+\quad Suppose an investor holds a bond with a fixed coupon rate of 5% when the prevailing market interest rate is also 5%. In this case, the bond is valued at its face value because the coupon payments are consistent with what the market offers. Now, imagine that market interest rates rise to 7%. New bonds being issued will offer a 7% coupon rate, making the older bond with a 5% coupon rate less attractive to investors. To compensate for this lower return, the price of the older bond will fall so that it becomes competitive with new bonds. Essentially, investors purchasing the bond at a discount can achieve an effective yield closer to the current market rate.
+
+\quad Conversely, when market interest rates fall—say to 3%—the older bond with its 5% coupon rate becomes more valuable because it pays a higher interest than newly issued bonds. In this case, investors are willing to pay a premium for the older bond, driving up its price.
+
+\quad This relationship occurs because bonds are essentially fixed-income securities that promise a predetermined stream of payments. When interest rates change, the relative attractiveness of these fixed payments changes, which directly impacts the bond’s market price. Mathematically, bond prices are determined by the present value of future cash flows (coupon payments and the face value at maturity). When interest rates rise, the discount rate used to calculate the present value increases, reducing the bond's price. When interest rates fall, the discount rate decreases, increasing the bond's price.
+
+
+
+![](Bonds.png)
+
+\newpage
+
+\begin{flushleft}
+\textbf{Hypotheses and derivation of the model}
+\end{flushleft}
+
+
+
+This document outlines a stochastic model for pricing default-free bonds, focusing on the instantaneous risk-free rate of interest dynamics.
+
+## Derivation of the Model
+
+### 1. Interest Rate Process
+The basic feature of the model is the stochastic nature of the instantaneously risk-free rate of interest, described by:
+
+$$dr = \beta(r) dt + \gamma(r) dz \tag{1}$$
+
+where:
+- $\beta(r)$ is the instantaneous drift
+- $\gamma(r)^2$ is the instantaneous variance
+- $dz$ is a Gauss-Wiener process with $E[dz] = 0$ and $E[dz^2] = dt$
+
+### 2. Bond Price Changes
+Assuming the value of any default-free bond is only a function of $r$ and time to maturity $\tau$, i.e., $B(r, \tau)$, Itô's Lemma gives us:
+
+$$\frac{dB}{B} = \mu_B dt + \sigma_B dz \tag{2}$$
+
+where:
+
+$$\mu_B = \frac{(\beta B_1 - B_2 + \frac{1}{2}\gamma^2B_{11})}{B}$$
+$$\sigma_B = \frac{\gamma B_1}{B}$$
+
+### 3. Risk Premium and Equilibrium
+The instantaneous excess return on the bond above the risk-free rate defines a risk premium:
+
+$$\frac{(\mu_B + C/B) - r}{\sigma_B} = \phi(r) \tag{3}$$
+
+where:
+- $C$ is the continuous coupon rate
+- $(\mu_B + C/B)$ represents total instantaneous expected return (price appreciation plus coupon yield)
+- $\phi(r)$ is the market price of risk
+
+### 4. Derivation of the Partial Differential Equation
+Substituting the expressions for $\mu_B$ and $\sigma_B$ into equation (3):
+
+$$\frac{(\frac{(\beta B_1 - B_2 + \frac{1}{2}\gamma^2B_{11})}{B} + \frac{C}{B}) - r}{\frac{\gamma B_1}{B}} = \phi(r)$$
+
+Cross-multiplying and simplifying:
+
+$$\beta B_1 - B_2 + \frac{1}{2}\gamma^2B_{11} + C - rB = \phi(r)\gamma B_1$$
+
+Rearranging terms gives us:
+
+$$\frac{1}{2}\gamma^2B_{11} + (\beta - \gamma\phi)B_1 - rB + B_2 + C = 0 \tag{4}$$
+
+### 5. Tax Effects
+When incorporating taxes, the valuation equation becomes:
+
+$$\frac{1}{2}\gamma^2(1 - T)B_{11} + ((1 - T)\beta - \gamma\phi)B_1 - (1 - R)rB - rB) - (1 - T)B_2 = 0 \tag{7}$$
+
+where:
+- $R$ is the tax rate on income
+- $T$ is the tax rate on capital gains
+
+## Boundary Conditions
+
+1. Terminal Value:
+$$B(r, 0) = F \tag{5}$$
+
+2. For Retractable/Extendible Bonds:
+$$B(r, \tau^*) = max[B(r, \tau_2), F] \tag{6}$$
+
+## Solution Requirements
+
+The partial differential equations (4) and (7) are subject to:
+1. Boundary conditions (5) and (6)
+2. Natural boundary conditions at $r = 0$ and $r = \infty$
+3. Additional restrictions on $\beta(r)$ and $\gamma(r)$ for empirical implementation
+
+\newpage
+
+## Model Synthesis
+
+### Complete Model Statement
+The default-free bond pricing model consists of the following core components:
+
+**Main Equation (Without Tax Effects):**
+$$\frac{1}{2}\gamma^2B_{11} + (\beta - \gamma\phi)B_1 - rB + B_2 + C = 0 \tag{4}$$
+
+**Main Equation (With Tax Effects):**
+$$\frac{1}{2}\gamma^2(1 - T)B_{11} + ((1 - T)\beta - \gamma\phi)B_1 - (1 - R)rB - rB) - (1 - T)B_2 = 0 \tag{7}$$
+
+### Initial and Boundary Conditions
+1. Terminal Value Condition:
+   $$B(r, 0) = F \tag{5}$$
+
+2. Retractable/Extendible Bond Condition:
+   $$B(r, \tau^*) = max[B(r, \tau_2), F] \tag{6}$$
+
+3. Natural boundary conditions at $r = 0$ and $r = \infty$
+
+### Key Function Definitions
+1. Interest Rate Process (defined in Eq. 1):
+   $$dr = \beta(r) dt + \gamma(r) dz$$
+   where $dz$ is a Gauss-Wiener process with $E[dz] = 0$ and $E[dz^2] = dt$
+
+2. Risk Premium Function (defined in Eq. 3):
+   $$\phi(r) = \frac{(\mu_B + C/B) - r}{\sigma_B}$$
+
+### Core Assumptions
+1. Bond value $B(r, \tau)$ depends only on:
+   - Current interest rate $(r)$
+   - Time to maturity $(\tau)$
+
+2. Price dynamics follow Itô's Lemma (Eq. 2):
+   $$\frac{dB}{B} = \mu_B dt + \sigma_B dz$$
+   where:
+   $$\mu_B = \frac{(\beta B_1 - B_2 + \frac{1}{2}\gamma^2B_{11})}{B}$$
+   $$\sigma_B = \frac{\gamma B_1}{B}$$
+
+### Model Parameters
+- $C$: Continuous coupon rate
+- $F$: Face value of the bond
+- $T$: Capital gains tax rate
+- $R$: Income tax rate
+- $\tau^*$: Decision point for retractable/extendible bonds
+- $\tau_2$: Time to maturity of longer-term bond
+
+
+
+
+\newpage
+
+\begin{flushleft}
+\textbf{Mathematical analysis}
+\end{flushleft}
+
+
+## 1. PDE Classification
+
+Consider the main pricing equation without tax effects:
+$$\frac{1}{2}\gamma^2B_{11} + (\beta - \gamma\phi)B_1 - rB + B_2 + C = 0 \tag{4}$$
+
+To classify this PDE, let's transform it into standard form:
+$$B_2 + a(r,\tau)B_{11} + b(r,\tau)B_1 + c(r,\tau)B = f(r,\tau)$$
+
+where:
+- $a(r,\tau) = \frac{1}{2}\gamma^2$
+- $b(r,\tau) = (\beta - \gamma\phi)$
+- $c(r,\tau) = -r$
+- $f(r,\tau) = -C$
+
+The equation is parabolic because:
+1. It's second-order in r
+2. The coefficient $a(r,\tau) = \frac{1}{2}\gamma^2 > 0$ (since $\gamma$ is real)
+3. The equation has first-order derivative in $\tau$
+
+This classification as parabolic is crucial as it suggests the problem will exhibit:
+- Forward propagation of information in $\tau$
+- Smoothing effects similar to the heat equation
+- No characteristic curves (unlike hyperbolic equations)
+
+## 2. Well-Posedness Analysis
+
+
+### 2.2 Existence Analysis
+
+To prove existence, we can use the method of successive approximations:
+
+1. Start with initial guess $B^{(0)}(r,\tau) = F$ (the face value)
+
+2. Define the sequence:
+$$B^{(n+1)}_2 = -\frac{1}{2}\gamma^2B^{(n)}_{11} - (\beta - \gamma\phi)B^{(n)}_1 + rB^{(n)} - C$$
+
+3. Under suitable conditions on coefficients:
+   - $\gamma^2$ bounded and positive
+   - $\beta, \phi$ Lipschitz continuous
+   - $r \ge 0$
+   
+The sequence converges in $Z$ to a solution.
+
+### 2.3 Uniqueness Proof
+
+Let $B_1$ and $B_2$ be two solutions. Define $w = B_1 - B_2$. Then:
+
+$$w_2 + \frac{1}{2}\gamma^2w_{11} + (\beta - \gamma\phi)w_1 - rw = 0$$
+$$w(r,0) = 0$$
+
+Multiply by w and integrate over $[0,\infty)$:
+
+$$\int_0^\infty w w_2 dr + \frac{1}{2}\gamma^2\int_0^\infty w w_{11} dr + \int_0^\infty (\beta - \gamma\phi)w w_1 dr - \int_0^\infty rw^2 dr = 0$$
+
+Using integration by parts and the decay conditions at infinity:
+
+$$\frac{1}{2}\frac{d}{d\tau}\int_0^\infty w^2 dr \le K\int_0^\infty w^2 dr$$
+
+By Gronwall's inequality, $w = 0$, proving uniqueness.
+
+### 2.4 Continuous Dependence
+
+For two solutions $B_1$ and $B_2$ with initial conditions differing by $\epsilon$:
+
+$$\|B_1 - B_2\|_Z \le Ce^{K\tau}\epsilon$$
+
+where C, K are constants depending on the coefficients.
+
+## 3. Asymptotic Analysis
+
+### 3.1 Short Time Asymptotics ($\tau \to 0$)
+
+Near maturity, develop Taylor series:
+$$B(r,\tau) = F + \tau B_1(r,0) + \frac{\tau^2}{2}B_2(r,0) + O(\tau^3)$$
+
+Substituting into the PDE yields:
+
+$B_1(r,0) = rF - C$
+
+$B_2(r,0) = \frac{1}{2}\gamma^2F_{11} + (\beta - \gamma\phi)F_1 - r(rF - C)$
+
+This gives the leading order behavior:
+$$B(r,\tau) = F + (rF - C)\tau + O(\tau^2)$$
+
+### 3.2 Long Time Asymptotics ($\tau \to \infty$)
+
+1. Seek separable solutions:
+   $$B(r,\tau) = e^{\lambda\tau}\psi(r)$$
+
+2. Substituting yields eigenvalue problem:
+   $$\frac{1}{2}\gamma^2\psi'' + (\beta - \gamma\phi)\psi' - (r + \lambda)\psi = 0$$
+
+3. Asymptotic behavior depends on spectrum of this operator:
+   - Discrete spectrum gives series of exponentially decaying modes
+   - Continuous spectrum contributes to oscillatory behavior
+
+4. Leading order term as $\tau \to \infty:$
+   $$B(r,\tau) \sim Ce^{\lambda_0\tau}\psi_0(r)$$
+   where $\lambda_0$ is the principal eigenvalue.
+
+### 3.3 Large Interest Rate Asymptotics ($r \to \infty$)
+
+1. Leading order balance suggests:
+   $$B(r,\tau) \sim A(\tau)e^{-\alpha r}$$
+   
+2. Substituting gives ODE for A($\tau$):
+   $$A'(\tau) = (\frac{1}{2}\gamma^2\alpha^2 - (\beta - \gamma\phi)\alpha - 1)A(\tau)$$
+
+## 4. Key Insights from Mathematical Analysis
+
+### 4.1 PDE Classification Insights
+1. **Diffusive Nature**: The parabolic classification reveals that bond prices "diffuse" information about interest rate changes similarly to how heat spreads in physical systems
+   - This explains why sudden interest rate shocks get smoothed out over time
+   - Changes in bond prices propagate forward in time only, meaning future events don't affect current prices (Makes sense market wise)
+
+2. **Smoothing Properties**: The parabolic nature guarantees that:
+   - Bond prices will be smooth functions of both time and interest rates
+   - There won't be any discontinuous jumps in prices (except at predetermined decision points for retractable bonds)
+
+### 4.2 Well-Posedness Insights
+1. **Existence and Uniqueness**:
+   - There is exactly one fair price for each bond under given market conditions
+   - This supports the no-arbitrage principle fundamental to financial markets
+   - Small changes in market conditions lead to small changes in bond prices, providing stability for trading
+
+
+2. **Continuous Dependence**:
+   - The bound on how errors propagate ($Ce^{K\tau}\epsilon$) shows that:
+     - Pricing errors grow exponentially with time to maturity
+     - Longer-term bonds are more sensitive to model parameter uncertainties
+     - Short-term bonds can be priced more reliably
+
+### 4.3 Asymptotic Analysis Insights
+1. **Short-Time Behavior**:
+   - Near maturity ($\tau → 0$), bond prices are primarily determined by:
+     - Face value (F)
+     - Current interest rate (r)
+     - Coupon payments (C)
+   - This explains why short-term bonds are less volatile
+
+2. **Long-Time Behavior**:
+   - The exponential decay modes ($e^{\lambda\tau}\psi(r)$) show that:
+     - Long-term bond prices are more sensitive to interest rate changes
+     - There's a natural hierarchy of factors affecting long-term prices
+     - The principal eigenvalue $\lambda_0$ determines the dominant long-term behavior
+
+3. **Large Interest Rate Behavior**:
+   - The exponential decay ($e^{-\alpha r}$) as $r \to \infty$ shows that:
+     - Bond prices decrease exponentially with rising interest rates
+     - This decrease becomes more pronounced for longer-term bonds
+     - There's a natural limit to how much bond prices can fall
+
+### 4.4 Practical Applications
+1. **Risk Management**:
+   - The analysis provides mathematical justification for duration-based hedging
+   - It quantifies how pricing errors compound over time
+   - It suggests natural limits for leveraged positions based on error growth
+
+2. **Portfolio Strategy**:
+   - Short-term bonds are mathematically more predictable
+   - Long-term bonds require more careful parameter estimation
+   - Diversification across maturities has a sound mathematical basis
+
+3. **Trading Implications**:
+   - Price sensitivity to interest rates has a rigorous mathematical structure
+   - The smoothing properties suggest limits to high-frequency trading strategies
+   - The uniqueness results support market efficiency for bonds
+
+
+
+
+\newpage
+
+
+\begin{flushleft}
+\textbf{Numerical work}
+\end{flushleft}
+
+```{r,include=FALSE}
+# Install and load required packages
+if (!require("quantmod")) install.packages("quantmod")
+if (!require("dplyr")) install.packages("dplyr")
+if (!require("ggplot2")) install.packages("ggplot2")
+if (!require("stats")) install.packages("stats")
+
+library(quantmod)
+library(dplyr)
+library(ggplot2)
+library(stats)
+
+get_canadian_bond_data = function(start_date = "2015-01-01", 
+                                 end_date = "2019-12-31") {
+    symbols = c(
+        "MPRIME",           # Prime Rate
+        "IRLTLT01CAM156N"   # 10-year
+    )
+    
+    bond_data = list()
+    
+    for(symbol in symbols) {
+        cat("Fetching data for", symbol, "...\n")
+        try({
+            data = getSymbols(symbol, src = "FRED", 
+                             from = start_date, to = end_date, auto.assign = FALSE)
+            bond_data[[symbol]] = data
+        })
+    }
+    
+    df = data.frame(
+        date = index(bond_data[[1]]),
+        prime = as.numeric(as.character(bond_data[[1]][,1])),
+        long_term = as.numeric(as.character(bond_data[[2]][,1]))
+    )
+    
+    clean_data = df %>%
+        tidyr::pivot_longer(
+            cols = c(prime, long_term),
+            names_to = "maturity",
+            values_to = "yield"
+        ) %>%
+        mutate(
+            maturity_years = case_when(
+                maturity == "prime" ~ 1,
+                maturity == "long_term" ~ 10
+            ),
+            yield = as.numeric(yield)/100,  # Convert to decimal
+            
+            coupon = 0.03,
+            rate = yield,
+            price = 100 * (1 + (yield - coupon)/coupon)
+        ) %>%
+        filter(!is.na(yield))
+    
+    return(clean_data)
+}
+
+
+
+calculate_H = function(tau, m_prime, sigma) {
+    # add bounds checking
+    if(tau <= 0) return(1)
+    
+    A = sqrt(max(m_prime^2 + 2*sigma^2, 1e-10))  # Ensure positive
+    term = (m_prime - A)*(1 - exp(-A*tau))/(2*A)
+    
+    # ensure denominator doesn't get too close to zero
+    denom = max(1 + term, 1e-10)
+    return(1/denom)
+}
+
+calculate_B = function(r, tau, k1, k2, sigma, m) {
+    # add bounds checking
+    if(tau <= 0) return(1)
+    
+    # model parameters
+    m_prime = (m - k2)
+    mu_prime = (m*k1 + k2)/m_prime
+    
+    # ensure numerical stability
+    A = sqrt(max(m_prime^2 + 2*sigma^2, 1e-10))
+    eta = (m_prime - A)/sigma^2  # Simplified eta calculation
+    
+    # calculate H(\Tau) with bounds
+    H_tau = calculate_H(tau, m_prime, sigma)
+    
+    # calculate exponent terms separately for stability
+    term1 = (2*mu_prime/sigma^2)*tau
+    term2 = -exp(min(eta*r - A*tau, 50))  # Prevent overflow
+    
+    # combine terms safely
+    B = H_tau * exp(term1 + term2)
+    
+    return(B)
+}
+
+calculate_yield = function(r, tau, k1, k2, sigma, m) {
+    if(tau <= 0) return(r)
+    
+    B = calculate_B(r, tau, k1, k2, sigma, m)
+    
+     # ensure B is valid
+    B = max(B, 1e-10)  # avoid division by zero or negative values
+    
+    R = -log(B) / tau
+    
+    return(R)
+}
+
+# modified parameter estimation
+estimate_parameters = function(market_data) {
+    # fixed parameters with realistic values
+    sigma = 0.012  # volatility
+    m = 0.025      # mean reversion level
+    
+    # objective function with bounds checking
+    objective = function(params) {
+        k1 = params[1]
+        k2 = params[2]
+        
+        yields = sapply(1:nrow(market_data), function(i) {
+            y = try(calculate_yield(
+                market_data$rate[i],
+                market_data$maturity_years[i],
+                k1, k2, sigma, m
+            ))
+            if(inherits(y, "try-error") || !is.finite(y)) return(NA)
+            return(y)
+        })
+        
+        # Handle invalid yields
+        valid_idx = !is.na(yields) & is.finite(yields)
+        if(sum(valid_idx) < length(yields)/2) return(1e10)
+        
+        eps = log(market_data$yield[valid_idx]) - log(yields[valid_idx])
+        mse = mean(eps^2)
+        
+        # add penalty for extreme parameter values
+        penalty = (abs(k1/1e-5) + abs(k2/1e-2))^2
+        
+        return(mse + 0.1*penalty)
+    }
+    
+    # use L-BFGS-B with bounds
+    result = optim(
+        par = c(0.309e-5, -0.154e-2),
+        fn = objective,
+        method = "L-BFGS-B",
+        lower = c(-1e-4, -5e-2),  # Lower bounds
+        upper = c(1e-4, -1e-3)    # Upper bounds
+    )
+    
+    return(c(k1 = result$par[1], k2 = result$par[2], sigma = sigma, m = m))
+}
+
+# Run analysis with visualization
+run_analysis = function() {
+    # get data
+    market_data = get_canadian_bond_data()
+    
+    # estimate parameters
+    params = estimate_parameters(market_data)
+    
+    # calculate R_inf
+    r_inf = -params["k1"]/params["k2"]
+    
+    # generate theoretical curves
+    times = seq(0.1, 30, length.out = 100)  # Start from 0.1 to avoid \Tau=0
+    rates = seq(min(market_data$rate), 
+                max(market_data$rate), 
+                length.out = 5)
+    
+    curves_data = expand.grid(time = times, rate = rates)
+    curves_data$yield = mapply(function(r, tau) 
+        calculate_yield(r, tau, params["k1"], params["k2"], 
+                       params["sigma"], params["m"]),
+        curves_data$rate, curves_data$time)
+    
+    # create plot
+    p = ggplot() +
+        geom_line(data = curves_data, 
+                 aes(x = time, y = yield, group = rate, 
+                     color = factor(round(rate*100, 1)))) +
+        geom_point(data = market_data,
+                  aes(x = maturity_years, y = yield),
+                  color = "red", size = 3) +
+        geom_hline(yintercept = r_inf, linetype = "dashed", color = "blue") +
+        theme_minimal() +
+        labs(title = "Canadian Government Bond Yield Curves",
+             subtitle = sprintf("k1 = %.2e, k2 = %.2e, R_inf = %.2f%%",
+                              params["k1"], params["k2"], r_inf*100),
+             x = "Time to Maturity (Years)",
+             y = "Yield",
+             color = "Rate (%)")
+    
+    print(p)
+    
+    
+    return(list(
+        parameters = params,
+        r_inf = r_inf,
+        data = market_data,
+        plot = p
+    ))
+}
+
+
+```
+
+
+
+### Model Specifications
+The model is built on three fundamental equations:
+
+1. The price of a bond paying a continuous coupon (Equation 10):
+   $$P(r, \tau, C) = \int_\tau^0 C B(r, t) dt + B(r,\tau)$$
+   where $B(r,\tau)$ represents the price of a pure discount bond.
+
+2. The pure discount bond price (Equation A-1):
+   $$B(r,\tau) = [H(\tau)] \exp[\frac{2\mu'}{\sigma^2}\tau - \exp(\eta r - A\tau)]$$
+   where:
+   - $H(\tau) = [1 + (m' - A)(1 - \exp(-A\tau))/(2A)]^{-1}$
+   - $m' = (m - k_2)$
+   - $\mu' = (mk_1 + k_2)/m'$
+   - $\eta = [m' - (m'^2 + 2\sigma^2)^{1/2}]/\sigma^2$
+   - $A = (m'^2 + 2\sigma^2)^{1/2}$
+
+3. The yield to maturity (Equation 12):
+   $$R(r,\tau) = -\frac{1}{\tau}\ln[B(r,\tau)]$$
+
+## Data and Implementation
+
+### Data Collection
+We focused on Canadian government bonds, specifically:
+- 1-year bonds (short-term)
+- 10-year bonds (long-term)
+This simplification was made to reduce computational complexity while still capturing the term structure's essential features.
+
+### Implementation Challenges
+
+1. Parameter Estimation
+   - The original paper's parameters ($k_1 = 0.309 \times 10^{-5}$, $k_2 = -0.154 \times 10^{-2}$) were estimated using 1970s data
+   - Modern interest rate environments differ significantly
+   
+
+2. Numerical Stability
+   - The exponential terms in equation A-1 are sensitive to parameter values
+   - Small changes in parameters can lead to numerical overflow or underflow
+   - The integration required for coupon-bearing bonds adds additional complexity
+
+
+
+
+
+\newpage
+
+
+\begin{flushleft}
+\textbf{Conclusions and Suggestions}
+\end{flushleft}
+
+
+
+## Results
+
+### Visual Comparison of Yield Curves
+
+#### Original Paper Results (Figure 1)
+![Paper's Yield Curves](Graph1.png)
+
+The original paper's graph demonstrates several key characteristics:
+1. Multiple distinct curves showing yields for different interest rates
+2. Clear asymptotic convergence to R_inf = 8.284%
+3. Smooth, well-behaved curves spanning from 2.73% to 15.00%
+4. Time to maturity extending to 50 years
+5. Curves both above and below R_inf, showing complete term structure
+6. Proper decay rates and curvature reflecting theoretical expectations
+
+#### My Implementation Results
+```{r}
+results = run_analysis()
+```
+[Resulting plot shows]
+1. Single line trending towards zero
+2. Initial yield values that are unrealistically high
+3. Missing the multiple curve structure
+4. Lack of convergence to a reasonable R_inf value
+5. Absence of the characteristic shape of yield curves
+
+### Key Discrepancies
+
+1. Curve Multiplicity
+   - Paper: Shows multiple curves for different initial rates
+   - My Implementation: Produces only a single line
+   
+2. Yield Range
+   - Paper: Well-bounded between 2.73% and 15.00%
+   - My Implementation: Shows extreme initial values and improper scaling
+
+3. Convergence Behavior
+   - Paper: Clear convergence to R_inf = 8.284%
+   - My Implementation: Trends inappropriately towards zero
+
+4. Shape Characteristics
+   - Paper: Smooth, exponential-like decay and growth patterns
+   - My Implementation: Lacks proper curvature and asymptotic behavior
+
+5. Term Structure Representation
+   - Paper: Complete representation of term structure dynamics
+   - My Implementation: Fails to capture fundamental yield curve properties
+
+
+
+### Technical Analysis of Divergence
+
+The significant differences between the graphs can be attributed to several factors:
+
+1. Parameter Sensitivity
+   
+    Paper's parameters
+   k1 = 0.309e-5
+   k2 = -0.154e-2
+   
+    Our implementation potentially suffers from:
+    - Numerical instability in parameter estimation
+    - Improper handling of exponential terms
+    - Scaling issues in the yield calculation
+   
+
+2. Mathematical Implementation
+   - The paper's implementation likely includes additional numerical stability measures not explicitly stated
+   - Our implementation may be missing crucial normalization steps
+   - The handling of the H($\tau$) function might need refinement
+
+3. Data Environment
+   - The paper's 1970s data reflected a different interest rate regime
+   - Modern low-rate environment may require different numerical handling
+   - Parameter estimation methods may need adjustment for current market conditions
+
+
+## Recommendations for Improvement
+
+### Technical Improvements
+1. Numerical Implementation
+   - Implement adaptive step sizing for numerical integration
+   - Add safeguards against numerical overflow/underflow
+   
+
+2. Parameter Estimation
+   - Develop constrained optimization methods
+   - Consider modern market-specific constraints
+
+3. Code Structure
+   - Implement unit tests for each component
+   - Add error handling for edge cases
+   - Improve documentation and parameter validation
+
+### Methodological Improvements
+1. Data Selection
+   - Include more maturities for better curve fitting
+  
+
+2. Model Adaptations
+   - Consider modifications for low interest rate environments
+   - Add modern market features (e.g., quantitative easing effects)
+   
+
+
+### Future Research Directions
+1. Investigate alternative term structure models more suitable for current markets
+2. Develop hybrid approaches combining classical and modern methods
+3. Explore machine learning techniques for parameter estimation
+4. Study the impact of modern monetary policy on term structure modeling
+
+
+
+
